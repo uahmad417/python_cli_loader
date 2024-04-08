@@ -38,12 +38,14 @@ class Loader:
         """Starts the loading animation. Should be run as a seperate thread
         """
 
-        animations = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
-        for character in cycle(animations):
+        loading_animations = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+        complete_animation = "\u2705" # heavy checkmark
+        for character in cycle(loading_animations):
             print(f" {character} {self.start_desc}", end="\r")
             sleep(0.1)
 
             if self.__stop:
+                print(f" {complete_animation} {self.end_desc}", end="\n")
                 break
 
     def start_loader(self):
