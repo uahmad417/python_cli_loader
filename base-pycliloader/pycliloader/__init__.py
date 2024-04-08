@@ -1,3 +1,3 @@
 """Animated CLI laoder"""
 
-from loader import Loader
+from .loader import Loader
