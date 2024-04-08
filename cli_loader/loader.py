@@ -2,7 +2,7 @@
 from itertools import cycle
 from threading import Thread
 from time import sleep
-from typing import Callable
+from typing import Callable, List
 
 
 class Loader:
@@ -16,6 +16,7 @@ class Loader:
         end_desc (str): the message to show when loading is completed
         stop (bool): flag to check when to stop the loader
         target (Callable): task to execute with loader. Should be a callable function
+        target (List): list of tasks to execute with loader. tasks should be a callable function
 
     Methods:
         _start_loader: Starts the loading animation
@@ -23,20 +24,20 @@ class Loader:
         stop_loader: stops the loading animation
     """
 
-    def __init__(self, start_desc: str, end_desc: str, target: Callable) -> None:
+    def __init__(self, start_desc: str, end_desc: str, targets: List[Callable]) -> None:
         """Initializes the loader object
 
         Args:
             start_desc (str): the message to show while loading
             end_desc (str): the message to show when loading is completed
             stop (bool): flag to check when to stop loader
-            target (Callable): task to execute with loader. Should be a callable function
+            target (List): list of tasks to execute with loader. tasks should be a callable function
         """
 
         self.start_desc = start_desc
         self.end_desc = end_desc
         self.__stop = False
-        self.target = target
+        self.targets = targets
 
     def __start_loader(self):
         """Starts the loading animation. 
@@ -59,10 +60,11 @@ class Loader:
         Creates a thread and calls the `_start_loader` method
         """
 
-        thread = Thread(target=self.__start_loader)
-        thread.start()
-        self.target()
-        self.stop_loader()
+        for target in self.targets:
+            thread = Thread(target=self.__start_loader)
+            thread.start()
+            target()
+            self.stop_loader()
 
     def stop_loader(self):
         """Stops the loading animation
