@@ -47,7 +47,7 @@ class Loader:
                 break
 
     def start_loader(self):
-        thread = Thread(target=self.start_loader)
+        thread = Thread(target=self._start_loader)
         thread.start()
 
     def stop_loader(self):
