@@ -24,7 +24,7 @@ class Loader:
         stop_loader: stops the loading animation
     """
 
-    def __init__(self, start_desc: str, end_desc: str, targets: List[Callable]) -> None:
+    def __init__(self, start_desc: str, end_desc: str, targets: List[Callable] = None) -> None:
         """Initializes the loader object
 
         Args:
@@ -39,7 +39,7 @@ class Loader:
         self.__stop = False
         self.targets = targets
 
-    def __start_loader(self):
+    def __animate(self):
         """Starts the loading animation. 
         Should be run as a seperate thread
         """
@@ -55,16 +55,23 @@ class Loader:
                 self.__stop = False
                 break
 
-    def start_loader(self):
+    def start_loader_with_target(self):
         """Start the loader.
         Creates a thread and calls the `_start_loader` method
         """
 
         for target in self.targets:
-            thread = Thread(target=self.__start_loader)
+            thread = Thread(target=self.__animate)
             thread.start()
             target()
             self.stop_loader()
+
+    def start_loader_simple(self):
+        """Start the loader without target context.
+        This loader needs to be stopped manually by calling `stop_loader`
+        """
+        thread = Thread(target=self.__animate)
+        thread.start()
 
     def stop_loader(self):
         """Stops the loading animation
