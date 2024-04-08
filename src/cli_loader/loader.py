@@ -30,9 +30,9 @@ class Loader:
             stop (bool): flag to check when to stop loader
         """
 
-        self._start_desc = start_desc
-        self._end_desc = end_desc
-        self._stop = False
+        self.start_desc = start_desc
+        self.end_desc = end_desc
+        self.__stop = False
 
     def _start_loader(self):
         """Starts the loading animation. Should be run as a seperate thread
@@ -40,17 +40,17 @@ class Loader:
 
         animations = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
         for character in cycle(animations):
-            print(f" {character} {self._start_desc}", end="\r")
+            print(f" {character} {self.start_desc}", end="\r")
             sleep(0.1)
 
-            if self._stop:
+            if self.__stop:
                 break
 
     def start_loader(self):
-        thread = Thread(target=self._start_loader)
+        thread = Thread(target=self.start_loader)
         thread.start()
 
     def stop_loader(self):
         """Stops the loading animation
         """
-        self._stop = True
+        self.__stop = True
