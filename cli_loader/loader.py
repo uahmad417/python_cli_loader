@@ -47,6 +47,7 @@ class Loader:
 
             if self.__stop:
                 print(f" {complete_animation} {self.end_desc}", end="\n")
+                self.__stop = False
                 break
 
     def start_loader(self):
